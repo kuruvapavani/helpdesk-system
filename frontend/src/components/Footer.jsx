@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div>Footer</div>
+    <div className='bg-hero flex justify-center items-center py-2 font-bold'>Footer Area</div>
   )
 }
 
