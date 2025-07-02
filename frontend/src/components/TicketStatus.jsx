@@ -9,6 +9,7 @@ const TicketStatus = ({
   date,
   rate,
   index,
+  onClick
 }) => {
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
@@ -47,7 +48,12 @@ const TicketStatus = ({
             : "rgba(196, 196, 196, 0.37)",
       }}
     >
-      <div className="text-blue-600 underline cursor-pointer">{ticketNo}</div>
+      <div
+        className="text-blue-600 underline cursor-pointer"
+        onClick={() => onClick(ticketNo)}
+      >
+        {ticketNo}
+      </div>
       <div>{subject}</div>
       <div>
         <span

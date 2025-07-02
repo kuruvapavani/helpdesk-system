@@ -2,21 +2,76 @@ import React, { useState } from "react";
 import Layout from "../Layout";
 import { IoIosSearch } from "react-icons/io";
 import TicketStatus from "../components/TicketStatus";
-
+import TicketDetails from "../components/TicketDetails";
 const MyTicket = () => {
   const allTickets = [
-    { ticketNo: "1234", subject: "Login issue", status: "In Progress", support: "Tech support", date: "13/08/21", rate: 1 },
-    { ticketNo: "1124", subject: "New ticket issue", status: "On hold", support: "Operation Team", date: "14/08/21", rate: 4.8 },
-    { ticketNo: "1224", subject: "New request", status: "Closed", support: "Tech support", date: "13/08/21", rate: 4.5 },
-    { ticketNo: "1244", subject: "Ticket submission", status: "In Progress", support: "Operation Team", date: "14/08/21", rate: 2 },
-    { ticketNo: "1114", subject: "Login issue", status: "In Progress", support: "Tech support", date: "3/08/21", rate: 1 },
-    { ticketNo: "1344", subject: "Server error", status: "In Progress", support: "DevOps", date: "15/08/21", rate: 3 },
-    { ticketNo: "1434", subject: "UI bug", status: "Closed", support: "Frontend Team", date: "15/08/21", rate: 5 },
+    {
+      ticketNo: "1234",
+      subject: "Login issue",
+      status: "In Progress",
+      support: "Tech support",
+      date: "13/08/21",
+      rate: 1,
+    },
+    {
+      ticketNo: "1124",
+      subject: "New ticket issue",
+      status: "On hold",
+      support: "Operation Team",
+      date: "14/08/21",
+      rate: 4.8,
+    },
+    {
+      ticketNo: "1224",
+      subject: "New request",
+      status: "Closed",
+      support: "Tech support",
+      date: "13/08/21",
+      rate: 4.5,
+    },
+    {
+      ticketNo: "1244",
+      subject: "Ticket submission",
+      status: "In Progress",
+      support: "Operation Team",
+      date: "14/08/21",
+      rate: 2,
+    },
+    {
+      ticketNo: "1114",
+      subject: "Login issue",
+      status: "In Progress",
+      support: "Tech support",
+      date: "3/08/21",
+      rate: 1,
+    },
+    {
+      ticketNo: "1344",
+      subject: "Server error",
+      status: "In Progress",
+      support: "DevOps",
+      date: "15/08/21",
+      rate: 3,
+    },
+    {
+      ticketNo: "1434",
+      subject: "UI bug",
+      status: "Closed",
+      support: "Frontend Team",
+      date: "15/08/21",
+      rate: 5,
+    },
     // Add more if needed
   ];
 
   const [entriesPerPage, setEntriesPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+
+  const openModal = (ticketNo) => {
+    const found = allTickets.find((t) => t.ticketNo === ticketNo);
+    setSelectedTicket(found);
+  };
 
   const totalPages = Math.ceil(allTickets.length / entriesPerPage);
   const startIndex = (currentPage - 1) * entriesPerPage;
@@ -56,7 +111,9 @@ const MyTicket = () => {
             className="bg-inputBg px-1 py-2 rounded rounded-lg"
           >
             {[5, 10, 15, 20, 25].map((num) => (
-              <option key={num} value={num}>{num}</option>
+              <option key={num} value={num}>
+                {num}
+              </option>
             ))}
           </select>
           <span>Entries</span>
@@ -80,13 +137,16 @@ const MyTicket = () => {
               key={ticket.ticketNo}
               {...ticket}
               index={startIndex + index}
+              onClick={openModal}
             />
           ))}
 
           {/* Info + Pagination */}
           <div className="flex items-center justify-between mt-2 px-4 text-sm">
             <p>
-              Showing {startIndex + 1} to {Math.min(endIndex, allTickets.length)} of {allTickets.length} entries
+              Showing {startIndex + 1} to{" "}
+              {Math.min(endIndex, allTickets.length)} of {allTickets.length}{" "}
+              entries
             </p>
 
             {/* Pagination */}
@@ -117,6 +177,13 @@ const MyTicket = () => {
                 ≫
               </span>
             </div>
+            {/* Ticket Details Modal */}
+            {selectedTicket && (
+              <TicketDetails
+                ticket={selectedTicket}
+                onClose={() => setSelectedTicket(null)}
+              />
+            )}
           </div>
         </div>
       </div>
