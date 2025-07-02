@@ -1,11 +1,10 @@
 import React from 'react'
-import Navbar from "../components/Navbar"
+import Layout from '../Layout'
 const Dashboard = () => {
   return (
-    <div>
-      <Navbar />
+    <Layout>
       <div className='text-3xl'>Hloopp</div>
-    </div>
+    </Layout>
   )
 }
 
