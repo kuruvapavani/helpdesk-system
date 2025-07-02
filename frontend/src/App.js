@@ -5,6 +5,7 @@ import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import NewTicket from './pages/NewTicket';
 import MyTicket from './pages/MyTicket';
+import UserProfile from "./pages/UserProfile";
 function App() {
   return (
     <Router>
@@ -14,6 +15,7 @@ function App() {
       <Route path='/signup' element={<SignUp />} />
       <Route path='/new-ticket' element={<NewTicket />} />
       <Route path='/my-ticket' element={<MyTicket />} />
+      <Route path='/profile' element={<UserProfile />} />
       </Routes>
     </Router>
   );
