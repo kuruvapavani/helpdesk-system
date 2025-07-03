@@ -9,6 +9,7 @@ import UserProfile from "./pages/UserProfile";
 import UserSettings from './pages/UserSettings';
 import ForgotPass from './pages/ForgotPass';
 import TicketApproval from './pages/TicketApproval';
+import Performance from './pages/Performance';
 function App() {
   return (
     <Router>
@@ -22,6 +23,7 @@ function App() {
       <Route path='/settings' element={<UserSettings />} />
       <Route path='/forgot-password' element={<ForgotPass />} />
       <Route path='/ticket-approval' element={<TicketApproval />}/>
+      <Route path='/performance' element={<Performance />} />
       </Routes>
     </Router>
   );
