@@ -1,14 +1,39 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Logging in with:', { username, password,email });
+    const role = "user";
+    try {
+      const response = await fetch("http://localhost:5000/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password ,role , email}),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Login failed");
+        return;
+      }
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("username", data.username);
+
+      alert("Sign Up successful!");
+      navigate("/");
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Something went wrong. Please try again later.");
+    }
   };
 
   return (
