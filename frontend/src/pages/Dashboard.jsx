@@ -5,15 +5,20 @@ import chart from "../assets/chart.svg";
 import technicalTeam from "../assets/techteam.png";
 import operationTeam from "../assets/operationteam.png";
 import { FaStar } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const [role, setRole] = useState("");
   const data = { rating: 4 };
-
+  const navigate = useNavigate();
   useEffect(() => {
     const storedRole = localStorage.getItem("role");
-    setRole(storedRole || "");
-  }, []);
+
+    if (!storedRole) {
+      navigate("/signin");
+    } else {
+      setRole(storedRole);
+    }
+  }, [navigate]);
 
   return (
     <Layout>
