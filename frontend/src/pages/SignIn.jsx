@@ -1,13 +1,37 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignIn = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = (e) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Logging in with:', { username, password });
+    try {
+      const response = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Login failed");
+        return;
+      }
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("username", data.username);
+
+      alert("Login successful!");
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Something went wrong. Please try again later.");
+    }
   };
 
   return (
@@ -47,9 +71,13 @@ const SignIn = () => {
         </form>
 
         <div className="flex justify-between w-3/5 mt-8">
-          <span className="text-red-600 hover:underline cursor-pointer text-sm">Forgot password</span>
+          <span className="text-red-600 hover:underline cursor-pointer text-sm">
+            Forgot password
+          </span>
           <Link to="/signup">
-            <span className="text-black hover:underline cursor-pointer text-lg">Sign Up</span>
+            <span className="text-black hover:underline cursor-pointer text-lg">
+              Sign Up
+            </span>
           </Link>
         </div>
       </div>
