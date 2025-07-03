@@ -12,6 +12,7 @@ import TicketApproval from './pages/TicketApproval';
 import Performance from './pages/Performance';
 import AdminSettings from './pages/AdminSettings';
 import Database from './pages/Database';
+import UserLogHistory from './pages/UserLogHistory';
 function App() {
   return (
     <Router>
@@ -28,6 +29,7 @@ function App() {
       <Route path='/performance' element={<Performance />} />
       <Route path='/admin-settings' element={<AdminSettings />} />
       <Route path='/database/:type' element={<Database />} />
+      <Route path='/user-log-history' element={<UserLogHistory />} />
       </Routes>
     </Router>
   );
