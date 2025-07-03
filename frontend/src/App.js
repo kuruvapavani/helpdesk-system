@@ -7,6 +7,7 @@ import NewTicket from './pages/NewTicket';
 import MyTicket from './pages/MyTicket';
 import UserProfile from "./pages/UserProfile";
 import UserSettings from './pages/UserSettings';
+import ForgotPass from './pages/ForgotPass';
 function App() {
   return (
     <Router>
@@ -18,6 +19,7 @@ function App() {
       <Route path='/my-ticket' element={<MyTicket />} />
       <Route path='/profile' element={<UserProfile />} />
       <Route path='/settings' element={<UserSettings />} />
+      <Route path='/forgot-password' element={<ForgotPass />} />
       </Routes>
     </Router>
   );
