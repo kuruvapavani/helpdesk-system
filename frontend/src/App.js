@@ -11,6 +11,7 @@ import ForgotPass from './pages/ForgotPass';
 import TicketApproval from './pages/TicketApproval';
 import Performance from './pages/Performance';
 import AdminSettings from './pages/AdminSettings';
+import Database from './pages/Database';
 function App() {
   return (
     <Router>
@@ -26,6 +27,7 @@ function App() {
       <Route path='/ticket-approval' element={<TicketApproval />}/>
       <Route path='/performance' element={<Performance />} />
       <Route path='/admin-settings' element={<AdminSettings />} />
+      <Route path='/database/:type' element={<Database />} />
       </Routes>
     </Router>
   );
