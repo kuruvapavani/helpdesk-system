@@ -1,9 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../Layout";
 import { IoIosSearch } from "react-icons/io";
 import TicketStatus from "../components/TicketStatus";
 import TicketDetails from "../components/TicketDetails";
+
 const MyTicket = () => {
+  const [entriesPerPage, setEntriesPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem("role");
+    setRole(storedRole);
+  }, []);
+
   const allTickets = [
     {
       ticketNo: "1234",
@@ -12,6 +23,9 @@ const MyTicket = () => {
       support: "Tech support",
       date: "13/08/21",
       rate: 1,
+      category: "Login",
+      priority: "High",
+      inCharge: "Ankit",
     },
     {
       ticketNo: "1124",
@@ -20,6 +34,9 @@ const MyTicket = () => {
       support: "Operation Team",
       date: "14/08/21",
       rate: 4.8,
+      category: "Bug",
+      priority: "Medium",
+      inCharge: "Raj",
     },
     {
       ticketNo: "1224",
@@ -28,45 +45,12 @@ const MyTicket = () => {
       support: "Tech support",
       date: "13/08/21",
       rate: 4.5,
+      category: "UI",
+      priority: "Low",
+      inCharge: "Priya",
     },
-    {
-      ticketNo: "1244",
-      subject: "Ticket submission",
-      status: "In Progress",
-      support: "Operation Team",
-      date: "14/08/21",
-      rate: 2,
-    },
-    {
-      ticketNo: "1114",
-      subject: "Login issue",
-      status: "In Progress",
-      support: "Tech support",
-      date: "3/08/21",
-      rate: 1,
-    },
-    {
-      ticketNo: "1344",
-      subject: "Server error",
-      status: "In Progress",
-      support: "DevOps",
-      date: "15/08/21",
-      rate: 3,
-    },
-    {
-      ticketNo: "1434",
-      subject: "UI bug",
-      status: "Closed",
-      support: "Frontend Team",
-      date: "15/08/21",
-      rate: 5,
-    },
-    // Add more if needed
+    // Add more as needed
   ];
-
-  const [entriesPerPage, setEntriesPerPage] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedTicket, setSelectedTicket] = useState(null);
 
   const openModal = (ticketNo) => {
     const found = allTickets.find((t) => t.ticketNo === ticketNo);
@@ -86,11 +70,11 @@ const MyTicket = () => {
 
   return (
     <Layout>
-      <div className="font-sanchez">
-        <div className="flex justify-center text-2xl">List of Ticket</div>
+      <div className="font-sanchez px-4">
+        <div className="flex justify-center text-2xl my-4">List of Ticket</div>
 
         {/* Search Input */}
-        <div className="relative w-full max-w-sm mt-4">
+        <div className="relative w-full max-w-sm mb-4">
           <input
             type="text"
             placeholder="Find ticket"
@@ -99,8 +83,8 @@ const MyTicket = () => {
           <IoIosSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 text-xl" />
         </div>
 
-        {/* Entries per page selector */}
-        <div className="mt-6 flex space-x-2 items-center">
+        {/* Entries selector */}
+        <div className="mb-4 flex space-x-2 items-center">
           <span>Show :</span>
           <select
             value={entriesPerPage}
@@ -108,7 +92,7 @@ const MyTicket = () => {
               setEntriesPerPage(Number(e.target.value));
               setCurrentPage(1);
             }}
-            className="bg-inputBg px-1 py-2 rounded rounded-lg"
+            className="bg-inputBg px-2 py-1 rounded-lg"
           >
             {[5, 10, 15, 20, 25].map((num) => (
               <option key={num} value={num}>
@@ -119,73 +103,50 @@ const MyTicket = () => {
           <span>Entries</span>
         </div>
 
-        {/* Ticket Table */}
-        <div className="p-6">
-          {/* Table Head */}
-          <div className="grid grid-cols-6 gap-2 text-sm mx-2 py-2 rounded-md items-center text-center my-4 px-4">
-            <div>Ticket No.</div>
-            <div>Subject</div>
-            <div>Status</div>
-            <div>Support by</div>
-            <div>Date</div>
-            <div>Rate</div>
-          </div>
+        {/* Table Header */}
+        <div
+          className={`grid ${
+            role === "user" ? "grid-cols-6" : "grid-cols-7"
+          } gap-2 text-sm py-2 font-semibold items-center text-center bg-gray-200 rounded px-4`}
+        >
+          <div>Ticket No.</div>
+          <div>Subject</div>
+          {role !== "user" && <div>Category</div>}
+          <div>{role === "user" ? "Status" : "Priority"}</div>
+          <div>Date</div>
+          {role !== "user" && <div>Person In Charge</div>}
+          <div>{role === "user" ? "Rate" : "Action"}</div>
+        </div>
 
-          {/* Ticket Rows */}
-          {currentTickets.map((ticket, index) => (
-            <TicketStatus
-              key={ticket.ticketNo}
-              {...ticket}
-              index={startIndex + index}
-              onClick={openModal}
-            />
-          ))}
+        {/* Ticket Rows */}
+        {currentTickets.map((ticket, index) => (
+          <TicketStatus
+            key={ticket.ticketNo}
+            {...ticket}
+            index={startIndex + index}
+            onClick={openModal}
+            role={role}
+          />
+        ))}
 
-          {/* Info + Pagination */}
-          <div className="flex items-center justify-between mt-2 px-4 text-sm">
-            <p>
-              Showing {startIndex + 1} to{" "}
-              {Math.min(endIndex, allTickets.length)} of {allTickets.length}{" "}
-              entries
-            </p>
-
-            {/* Pagination */}
-            <div className="flex gap-2 items-center text-lg select-none">
-              <span
-                onClick={() => handlePageChange(1)}
-                className="cursor-pointer hover:text-blue-500"
-              >
-                ≪
-              </span>
-              <span
-                onClick={() => handlePageChange(currentPage - 1)}
-                className="cursor-pointer hover:text-blue-500"
-              >
-                &lt;
-              </span>
-              <span className="px-2">{currentPage}</span>
-              <span
-                onClick={() => handlePageChange(currentPage + 1)}
-                className="cursor-pointer hover:text-blue-500"
-              >
-                &gt;
-              </span>
-              <span
-                onClick={() => handlePageChange(totalPages)}
-                className="cursor-pointer hover:text-blue-500"
-              >
-                ≫
-              </span>
-            </div>
-            {/* Ticket Details Modal */}
-            {selectedTicket && (
-              <TicketDetails
-                ticket={selectedTicket}
-                onClose={() => setSelectedTicket(null)}
-              />
-            )}
+        {/* Info + Pagination */}
+        <div className="flex items-center justify-between mt-4 px-4 text-sm">
+          <p>
+            Showing {startIndex + 1} to {Math.min(endIndex, allTickets.length)} of {allTickets.length} entries
+          </p>
+          <div className="flex gap-2 items-center text-lg select-none">
+            <span onClick={() => handlePageChange(1)} className="cursor-pointer hover:text-blue-500">≪</span>
+            <span onClick={() => handlePageChange(currentPage - 1)} className="cursor-pointer hover:text-blue-500">&lt;</span>
+            <span className="px-2">{currentPage}</span>
+            <span onClick={() => handlePageChange(currentPage + 1)} className="cursor-pointer hover:text-blue-500">&gt;</span>
+            <span onClick={() => handlePageChange(totalPages)} className="cursor-pointer hover:text-blue-500">≫</span>
           </div>
         </div>
+
+        {/* Modal */}
+        {selectedTicket && (
+          <TicketDetails ticket={selectedTicket} onClose={() => setSelectedTicket(null)} />
+        )}
       </div>
     </Layout>
   );

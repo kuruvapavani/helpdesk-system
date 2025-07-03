@@ -1,5 +1,7 @@
 import React from "react";
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { FaStar, FaStarHalfAlt, FaRegStar, FaDownload } from "react-icons/fa";
+import { RiFileEditLine } from "react-icons/ri";
+import addPerson from "../assets/addperson.svg";
 
 const TicketStatus = ({
   ticketNo,
@@ -8,11 +10,15 @@ const TicketStatus = ({
   support,
   date,
   rate,
+  category,
+  priority,
+  inCharge,
   index,
-  onClick
+  onClick,
+  role,
 }) => {
   const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
+    switch (status?.toLowerCase()) {
       case "in progress":
         return "bg-green-400 text-white";
       case "on hold":
@@ -40,7 +46,9 @@ const TicketStatus = ({
 
   return (
     <div
-      className="grid grid-cols-6 gap-2 text-sm px-4 py-4 items-center text-center"
+      className={`grid ${
+        role === "user" ? "grid-cols-6" : "grid-cols-7"
+      } gap-2 text-sm px-4 py-4 items-center text-center`}
       style={{
         backgroundColor:
           index % 2 === 0
@@ -55,18 +63,48 @@ const TicketStatus = ({
         {ticketNo}
       </div>
       <div>{subject}</div>
+      {role !== "user" && <div>{category || "—"}</div>}
       <div>
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
-            status
-          )}`}
-        >
-          {status}
-        </span>
+        {role === "user" ? (
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+              status
+            )}`}
+          >
+            {status}
+          </span>
+        ) : (
+          priority || "—"
+        )}
       </div>
-      <div>{support}</div>
       <div>{date}</div>
-      <div className="flex justify-center gap-[2px]">{renderStars(rate)}</div>
+      {role !== "user" && <div>{inCharge || "—"}</div>}
+
+      <div className="flex justify-center gap-2">
+        {role === "user" ? (
+          <div className="flex gap-[2px]">{renderStars(rate)}</div>
+        ) : (
+          <>
+            <RiFileEditLine
+              className="w-5 h-5 cursor-pointer"
+              title="Edit Ticket"
+              onClick={() => onClick(ticketNo)}
+            />
+            <img
+              src={addPerson}
+              alt="Assign"
+              className="w-6 h-6 cursor-pointer"
+              title="Assign Person"
+              onClick={() => onClick(ticketNo)}
+            />
+            <FaDownload
+              className="w-5 h-5 cursor-pointer"
+              title="Download"
+              onClick={() => console.log("Download", ticketNo)}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 };
