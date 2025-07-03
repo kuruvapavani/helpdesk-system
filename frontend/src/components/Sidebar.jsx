@@ -86,7 +86,7 @@ const Sidebar = () => {
             </div>
           )}
 
-          {renderLink("/setting", <IoSettingsOutline className="w-5 h-5" />, "Setting")}
+          {renderLink("/admin-settings", <IoSettingsOutline className="w-5 h-5" />, "Setting")}
           {renderLink("/user-log-history", UserLogHistory, "User Log History")}
         </>
       )}
