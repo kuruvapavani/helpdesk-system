@@ -27,7 +27,7 @@ const SignIn = () => {
       localStorage.setItem("username", data.username);
 
       alert("Login successful!");
-      navigate("/dashboard");
+      navigate("/");
     } catch (err) {
       console.error("Login error:", err);
       alert("Something went wrong. Please try again later.");

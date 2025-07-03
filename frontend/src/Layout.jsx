@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <div className="flex flex-1">
-        <div className="w-48 bg-gray-300">
+        <div className="w-60 bg-gray-300">
           <Sidebar />
         </div>
         <div className="flex flex-col flex-1 justify-between">
