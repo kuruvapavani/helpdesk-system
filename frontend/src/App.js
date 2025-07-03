@@ -8,6 +8,7 @@ import MyTicket from './pages/MyTicket';
 import UserProfile from "./pages/UserProfile";
 import UserSettings from './pages/UserSettings';
 import ForgotPass from './pages/ForgotPass';
+import TicketApproval from './pages/TicketApproval';
 function App() {
   return (
     <Router>
@@ -20,6 +21,7 @@ function App() {
       <Route path='/profile' element={<UserProfile />} />
       <Route path='/settings' element={<UserSettings />} />
       <Route path='/forgot-password' element={<ForgotPass />} />
+      <Route path='/ticket-approval' element={<TicketApproval />}/>
       </Routes>
     </Router>
   );
