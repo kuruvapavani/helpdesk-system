@@ -1,14 +1,18 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const connectDB = require("./config/connectDB");
 
 const app = express();
+
+// Connect to MongoDB
+connectDB();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Test route
+// Routes
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
